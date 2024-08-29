@@ -7,12 +7,29 @@ import requests
 
 
 class Command(BaseCommand):
+    """
+    Management command для импорта логов Nginx.
+
+    Эта команда загружает лог-файл с Google Drive по предоставленному URL, парсит каждую строку
+    как JSON и сохраняет соответствующие данные в базу данных.
+
+    Атрибуты:
+        help (str): Описание команды, отображаемое при вызове `--help`.
+    """
     help = 'import nginx logs'
 
     def add_arguments(self, parser):
+        """
+        Определяет аргументы для команды.
+        """
         parser.add_argument('url', help='logs url', type=str)
 
     def handle(self, *args, **kwargs):
+        """
+        Основная логика команды.
+        Выполняет загрузку файла по URL, парсит его и сохраняет данные в базу.
+        """
+
         share_url = kwargs['url']
         match = re.search(r'/d/([a-zA-Z0-9_-]+)', share_url)
         if match:
